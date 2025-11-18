@@ -5,13 +5,16 @@ import "bootstrap-icons/font/bootstrap-icons.css";
 import App from './App.jsx'
 import { BrowserRouter } from 'react-router-dom';
 import { CartProvider } from './Context/CartProvider.jsx';
+import { ProductsProvider } from './Context/MockApiContext.jsx';
 
 createRoot(document.getElementById('root')).render(
   <StrictMode>
     <BrowserRouter>
-      <CartProvider>
-        <App />
-      </CartProvider>
+      <ProductsProvider>
+        <CartProvider>
+          <App />
+        </CartProvider>
+      </ProductsProvider>
     </BrowserRouter>
   </StrictMode>,
 )

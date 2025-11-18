@@ -5,10 +5,12 @@ import { Link } from "react-router-dom";
 import { useCart } from "../Context/CartProvider";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import { useContext } from "react";
+import { ProductsContext } from "../Context/MockApiCOntext";
 
 function Products () {
-    const { cart, products, addToCart, removeFromCart } = useCart();
-    const items = products.slice(0, 12);
+    const  { products } = useContext(ProductsContext);
+    const { addToCart, removeFromCart } = useCart();
 
     return(
         <>
@@ -16,13 +18,13 @@ function Products () {
 
             <Container className="my-5">
                 <Row xs={1} md={3} className="g-4">
-                {items.map((i) => {
-                    const cartItem = cart.find((p) => p.id === i.id); //veo si el item ya está en el carrito (info util para botones)
+                {products.map((i) => {
+                    const cartItem = products.find((p) => p.id === i.id); //veo si el item ya está en el carrito (info util para botones)
 
                     return (
                     <Col key={i.id}>
                         <Card className="h-100">
-                        <Card.Img variant="top" src={i.images[0]} />
+                        <Card.Img variant="top" src={i.image} width="300px" height="300px" />
                         <Card.Body className="d-flex flex-column justify-content-between">
                             <div>
                             <Card.Title>{i.title}</Card.Title>
