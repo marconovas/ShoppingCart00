@@ -1,7 +1,9 @@
-import { Container, Table } from "react-bootstrap";
+import { Container, Table, Button } from "react-bootstrap";
 import Footer from "../Components/Footer";
 import Header from "../Components/Header";
-import { useCart } from "../Context/CartProvider";
+import { ProductsContext } from "../Context/MockApiCOntext";
+import { useContext } from "react";
+import { Link } from "react-router-dom";
 
 function Admin () {
     {/*----------------- DONE WITH PROTECTEDROUTE.JSX -------------
@@ -13,8 +15,7 @@ function Admin () {
         }    
     */}
 
-    const { products } = useCart();
-    const items = products.slice(0, 20); 
+    const { products, deleteProduct } = useContext(ProductsContext); 
 
     return(
         <div>
@@ -23,6 +24,12 @@ function Admin () {
             <div className="d-flex flex-column justify-content-center align-items-center text-center">
                 <h3 className="fw-bold mb-3">Welcome Admin!</h3>
                 <p className="lead mb-4">Don't forget to logout after finishing!</p>
+            
+                <Link to="/admin/add">
+                    <Button variant="success" className="mb-3">
+                        + Add Product
+                    </Button>
+                </Link>
             </div>
 
             <Container>
@@ -31,24 +38,34 @@ function Admin () {
                     <thead>
                         <tr>
                             <th>Id</th>
-                            <th>Title</th>
+                            <th>Name</th>
                             <th>Description</th>
-                            <th>Category</th>
                             <th>Price</th>
-                            <th>Rating</th>
-                            <th>Stock</th>                        
+                            <th>Stock</th>                      
                         </tr>
                     </thead>
                     <tbody>
-                        {items.map((i, index) => (
-                            <tr key={index}>
-                                <td>{i.id}</td>
-                                <th>{i.title}</th>
-                                <th>{i.description}</th>
-                                <th>{i.category}</th>
-                                <th>${i.price}</th>
-                                <th>{i.rating}</th>
-                                <th>{i.stock}</th>
+                        {products.map((p) => (
+                            <tr key={p.id}>
+                                <td>{p.id}</td>
+                                <th>{p.name}</th>
+                                <th>{p.description}</th>
+                                <th>${p.price}</th>
+                                <th>{p.stock}</th>
+
+                                <td className="d-flex gap-2">
+                                    <Link to={`/admin/edit/${p.id}`}>
+                                        <Button variant="warning" size="sm">Editar</Button>
+                                    </Link>
+
+                                    <Button
+                                        variant="danger"
+                                        size="sm"
+                                        onClick={() => deleteProduct(p.id)}
+                                    >
+                                        Eliminar
+                                    </Button>
+                                </td>
                             </tr>
                         ))}
                     </tbody>
