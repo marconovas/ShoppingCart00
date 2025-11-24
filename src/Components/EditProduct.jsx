@@ -1,7 +1,7 @@
 import { useContext, useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { ProductsContext } from "../Context/MockApiCOntext";
-import { Container, Form, Button } from "react-bootstrap";
+import { Container, Form, Button, Card } from "react-bootstrap";
 
 function EditProduct() {
     const { id } = useParams();
@@ -29,34 +29,79 @@ function EditProduct() {
 
     function handleSubmit(e) {
         e.preventDefault();
+        
         updateProduct(id, data);
         alert("Producto Actualizado!");
         navigate("/admin");
     }
 
     return(
-        <Container className="p-4">
-            <h3>Editar producto</h3>
+        <Container className="py-4 d-flex justify-content-center">
+            <Card className="shadow-sm p-4" style={{ maxWidth: "500px", width: "100%" }}>
+                <h3 className="mb-4 text-center">Editar producto</h3>
 
-            <Form onSubmit={handleSubmit}>
-                <Form.Group className="mb-3">
-                    <Form.Control name="name" value={data.name} onChange={handleChange} />
-                </Form.Group>
-                <Form.Group className="mb-3">
-                    <Form.Control name="description" value={data.description} onChange={handleChange}/>
-                </Form.Group>
-                <Form.Group className="mb-3">
-                    <Form.Control name="price" type="number" value={data.price} onChange={handleChange}/>
-                </Form.Group>
-                <Form.Group className="mb-3">
-                    <Form.Control name="stock" type="number" value={data.stock} onChange={handleChange}/>
-                </Form.Group>
-                <Form.Group className="mb-3">
-                    <Form.Control name="image" value={data.image} onChange={handleChange}/>
-                </Form.Group>
+                <Form onSubmit={handleSubmit}>
+                    <Form.Group className="mb-3">
+                        <Form.Label className="fw-semibold">Título</Form.Label>
+                        <Form.Control
+                            name="name"
+                            value={data.name}
+                            onChange={handleChange}
+                            placeholder="Título del producto"
+                        />
+                    </Form.Group>
 
-                <Button type="submit" variant="warning">Guardar cambios</Button>
-            </Form>
+                    <Form.Group className="mb-3">
+                        <Form.Label className="fw-semibold">Descripción</Form.Label>
+                        <Form.Control
+                            name="description"
+                            value={data.description}
+                            as="textarea"
+                            rows={3}
+                            onChange={handleChange}
+                            placeholder="Descripción detallada"
+                        />
+                    </Form.Group>
+
+                    <Form.Group className="mb-3">
+                        <Form.Label className="fw-semibold">Precio</Form.Label>
+                        <Form.Control
+                            name="price"
+                            type="number"
+                            value={data.price}
+                            onChange={handleChange}
+                            placeholder="Precio"
+                        />
+                    </Form.Group>
+
+                    <Form.Group className="mb-3">
+                        <Form.Label className="fw-semibold">Stock</Form.Label>
+                        <Form.Control
+                            name="stock"
+                            type="number"
+                            value={data.stock}
+                            onChange={handleChange}
+                            placeholder="Cantidad disponible"
+                        />
+                    </Form.Group>
+
+                    <Form.Group className="mb-3">
+                        <Form.Label className="fw-semibold">URL de imagen</Form.Label>
+                        <Form.Control
+                            name="image"
+                            value={data.image}
+                            onChange={handleChange}
+                            placeholder="https://..."
+                        />
+                    </Form.Group>
+
+                    <div className="d-flex justify-content-center mt-3">
+                        <Button type="submit" variant="warning" className="px-4 fw-semibold">
+                            Guardar cambios
+                        </Button>
+                    </div>
+                </Form>
+            </Card>
         </Container>
     )
 }
