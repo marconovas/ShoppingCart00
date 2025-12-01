@@ -5,17 +5,34 @@ import { Link } from "react-router-dom";
 import { useCart } from "../Context/CartProvider";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import { useContext, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { ProductsContext } from "../Context/MockApiCOntext";
 
 function Products () {
     const { cart, addToCart, removeFromCart } = useCart();
     const  { products } = useContext(ProductsContext);
 
+    //DEBOUNCE (OPTIMIZACIÓN DE BÚSQUEDA)
+    const useDebounce = (value, delay = 300) => {
+        const [debouncedValue, setDebouncedValue] = useState(value);
+
+        useEffect(() => {
+            const handler = setTimeout(() => {
+                setDebouncedValue(value);
+            }, delay)
+            
+            return () => clearTimeout(handler);
+        }, [value, delay]);
+
+        return debouncedValue;
+    };
+
+    //BUSQUEDA DE PRODUCTOS
     const [ search, setSearch ] = useState("");
+    const debouncedSearch = useDebounce(search, 300);
 
     const filteredProducts = products.filter(product => 
-        product.name.toLowerCase().includes(search.toLowerCase())
+        product.name.toLowerCase().includes(debouncedSearch.toLowerCase())
     );
 
     return(
